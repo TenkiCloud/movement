@@ -1,20 +1,20 @@
 name: Checks
 
-on:
-  pull_request:
-    types:
-      - labeled
-      - opened
-      - synchronize
-  push:
-    branches:
-      - main
-    tags:
-      - "[0-9]*.[0-9]*.[0-9]*"
+on: pull_request
+  # pull_request:
+  #   types:
+  #     - labeled
+  #     - opened
+  #     - synchronize
+  # push:
+  #   branches:
+  #     - main
+  #   tags:
+  #     - "[0-9]*.[0-9]*.[0-9]*"
 
 jobs:
   read-github-context-object:
-    runs-on: ubuntu-latest
+    runs-on: tenki-standard-autoscale
     steps:
       # I know this is not pretty (debug information) but it's useful to have this
       - name: Read github context
@@ -29,9 +29,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
           - os: macos-15
             arch: arm64
             runs-on: macos-15
@@ -53,9 +53,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
           - os: macos-15
             arch: arm64
             runs-on: macos-15
@@ -82,17 +82,17 @@ jobs:
               -p movement-signer-test
 
   movement-full-node-local:
-    if: >
-      github.event.label.name == 'cicd:movement-full-node'
-      || github.ref == 'refs/heads/main'
-      || startsWith(github.ref, 'refs/tags/')
+    # if: >
+    #   github.event.label.name == 'cicd:movement-full-node'
+    #   || github.ref == 'refs/heads/main'
+    #   || startsWith(github.ref, 'refs/tags/')
 
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -113,17 +113,17 @@ jobs:
           nix develop --command bash  -c "just movement-full-node native build.setup.eth-local.celestia-local.test -t=false"
 
   movement-full-node-malicious:
-    if: >
-      github.event.label.name == 'cicd:movement-full-node-malicious'
-      || github.ref == 'refs/heads/main'
-      || startsWith(github.ref, 'refs/tags/')
+    # if: >
+    #   github.event.label.name == 'cicd:movement-full-node-malicious'
+    #   || github.ref == 'refs/heads/main'
+    #   || startsWith(github.ref, 'refs/tags/')
 
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -142,48 +142,48 @@ jobs:
         run: |
           nix develop --command bash  -c "just movement-full-node native build.setup.eth-local.celestia-local.gas-dos -t=false"
 
-  movement-multi-node-local:
-    if: >
-      github.event.label.name == 'cicd:movement-multi-node-local'
-      || github.ref == 'refs/heads/main'
-      || startsWith(github.ref, 'refs/tags/')
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-22.04
-            arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+  # movement-multi-node-local:
+  #   if: >
+  #     github.event.label.name == 'cicd:movement-multi-node-local'
+  #     || github.ref == 'refs/heads/main'
+  #     || startsWith(github.ref, 'refs/tags/')
+  #   strategy:
+  #     matrix:
+  #       include:
+  #         - os: tenki-standard-autoscale
+  #           arch: x86_64
+  #           runs-on: tenki-standard-autoscale
 
-    runs-on: ${{ matrix.runs-on }}
+  #   runs-on: ${{ matrix.runs-on }}
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          submodules: true
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
 
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+  #     - name: Install Nix
+  #       uses: DeterminateSystems/nix-installer-action@main
 
-      - name: Run Movement Full Node Tests Against Local ETH and Local Celestia
-        env:
-          CELESTIA_LOG_LEVEL: FATAL # adjust the log level while debugging
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        run: |
-          nix develop --command bash  -c "just movement-full-node native build.setup.eth-local.celestia-local.test-followers -t=false"
+  #     - name: Run Movement Full Node Tests Against Local ETH and Local Celestia
+  #       env:
+  #         CELESTIA_LOG_LEVEL: FATAL # adjust the log level while debugging
+  #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       run: |
+  #         nix develop --command bash  -c "just movement-full-node native build.setup.eth-local.celestia-local.test-followers -t=false"
 
   movement-indexer-local:
-    if: >
-      github.event.label.name == 'cicd:movement-full-node'
-      || github.ref == 'refs/heads/main'
-      || startsWith(github.ref, 'refs/tags/')
+    # if: >
+    #   github.event.label.name == 'cicd:movement-full-node'
+    #   || github.ref == 'refs/heads/main'
+    #   || startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -202,47 +202,47 @@ jobs:
         run: |
           nix develop --command bash  -c "just movement-full-node native build.celestia-local.indexer.hasura.indexer-test -t=false"
 
-  movement-full-node-remote:
-    if: false
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-22.04
-            arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+  # movement-full-node-remote:
+  #   if: false
+  #   strategy:
+  #     matrix:
+  #       include:
+  #         - os: tenki-standard-autoscale
+  #           arch: x86_64
+  #           runs-on: tenki-standard-autoscale
 
-    runs-on: ${{ matrix.runs-on }}
+  #   runs-on: ${{ matrix.runs-on }}
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          submodules: true
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
 
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+  #     - name: Install Nix
+  #       uses: DeterminateSystems/nix-installer-action@main
 
-      - name: Run Movement Full Node Tests Against Holesky and Local Celestia
-        env:
-          CELESTIA_LOG_LEVEL: FATAL # adjust the log level while debugging
-          MCR_DEPLOYMENT_ACCOUNT_PRIVATE_KEY: ${{ secrets.MCR_DEPLOYMENT_ACCOUNT_PRIVATE_KEY }}
-        run: |
-          nix develop --command bash  -c "just movement-full-node native build.setup.eth-holesky.celestia-local.test -t=false"
-          nix develop --command bash  -c "just movement-full-node native build.setup.eth-holesky.celestia-local.test -t=false"
+  #     - name: Run Movement Full Node Tests Against Holesky and Local Celestia
+  #       env:
+  #         CELESTIA_LOG_LEVEL: FATAL # adjust the log level while debugging
+  #         MCR_DEPLOYMENT_ACCOUNT_PRIVATE_KEY: ${{ secrets.MCR_DEPLOYMENT_ACCOUNT_PRIVATE_KEY }}
+  #       run: |
+  #         nix develop --command bash  -c "just movement-full-node native build.setup.eth-holesky.celestia-local.test -t=false"
+  #         nix develop --command bash  -c "just movement-full-node native build.setup.eth-holesky.celestia-local.test -t=false"
 
   # Gas Dos
   gas-dos:
-    if: >
-      github.event.label.name == 'cicd:gas-dos'
-      || github.ref == 'refs/heads/main'
-      || startsWith(github.ref, 'refs/tags/')
+    # if: >
+    #   github.event.label.name == 'cicd:gas-dos'
+    #   || github.ref == 'refs/heads/main'
+    #   || startsWith(github.ref, 'refs/tags/')
 
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -262,13 +262,12 @@ jobs:
           nix develop --command bash  -c "just movement-full-node native build.setup.eth-local.celestia-local.gas-dos -t=false"
 
   movement-celestia-da-light-node:
-    if: false # this is effectively tested by the above
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -284,17 +283,17 @@ jobs:
         run: CELESTIA_LOG_LEVEL=FATAL nix develop --command bash  -c "just movement-celestia-da-light-node native build.setup.test.local -t=false"
 
   governed-gas-pool:
-    if: >
-      github.event.label.name == 'cicd:governed-gas-pool'
-      || github.ref == 'refs/heads/main'
-      || startsWith(github.ref, 'refs/tags/')
+    # if: >
+    #   github.event.label.name == 'cicd:governed-gas-pool'
+    #   || github.ref == 'refs/heads/main'
+    #   || startsWith(github.ref, 'refs/tags/')
 
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -314,16 +313,16 @@ jobs:
           nix develop --command bash  -c "just movement-full-node native build.setup.eth-local.celestia-local.test-ggp-gas-fee -t=false"
 
   core-resource-signer:
-    if: >
-      github.event.label.name == 'cicd:core-resource-signer'
-      || github.ref == 'refs/heads/main'
-      || startsWith(github.ref, 'refs/tags/')
+    # if: >
+    #   github.event.label.name == 'cicd:core-resource-signer'
+    #   || github.ref == 'refs/heads/main'
+    #   || startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -343,16 +342,16 @@ jobs:
           nix develop --command bash  -c "just movement-full-node native build.setup.eth-local.celestia-local.test-ggp-gas-fee -t=false"
 
   mcr:
-    if: >
-      github.event.label.name == 'cicd:mcr'
-      || github.ref == 'refs/heads/main'
-      || startsWith(github.ref, 'refs/tags/')
+    # if: >
+    #   github.event.label.name == 'cicd:mcr'
+    #   || github.ref == 'refs/heads/main'
+    #   || startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -365,7 +364,7 @@ jobs:
  
   cargo-fmt-check:
     name: Cargo Format Check
-    runs-on: ubuntu-latest
+    runs-on: tenki-standard-autoscale
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -376,16 +375,16 @@ jobs:
 
   # Elsa to Biarritz RC1 Checks
   bring-up-elsa-to-biarritz-rc1:
-    if: >
-      github.event.label.name == 'cicd:bring-up-elsa-to-biarritz-rc1'
-      || github.ref == 'refs/heads/main'
-      || startsWith(github.ref, 'refs/tags/')
+    # if: >
+    #   github.event.label.name == 'cicd:bring-up-elsa-to-biarritz-rc1'
+    #   || github.ref == 'refs/heads/main'
+    #   || startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -405,16 +404,16 @@ jobs:
           nix develop --command bash  -c "just movement-full-node native build.setup.eth-local.celestia-local.test-bring-up-elsa-to-biarritz-rc1 -t=false"
 
   migrate-elsa-to-biarritz-rc1:
-    if: >
-      github.event.label.name == 'cicd:migrate-elsa-to-biarritz-rc1'
-      || github.ref == 'refs/heads/main'
-      || startsWith(github.ref, 'refs/tags/')
+    # if: >
+    #   github.event.label.name == 'cicd:migrate-elsa-to-biarritz-rc1'
+    #   || github.ref == 'refs/heads/main'
+    #   || startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -435,16 +434,16 @@ jobs:
 
   # Biarritz RC1 to Pre-L1 Merge Checks
   bring-up-biarritz-rc1-to-pre-l1-merge:
-    if: >
-      github.event.label.name == 'cicd:bring-up-biarritz-rc1-to-pre-l1-merge'
-      || github.ref == 'refs/heads/main'
-      || startsWith(github.ref, 'refs/tags/')
+    # if: >
+    #   github.event.label.name == 'cicd:bring-up-biarritz-rc1-to-pre-l1-merge'
+    #   || github.ref == 'refs/heads/main'
+    #   || startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -464,16 +463,16 @@ jobs:
           nix develop --command bash  -c "just movement-full-node native build.setup.eth-local.celestia-local.test-bring-up-biarritz-rc1-to-pre-l1-merge -t=false"
 
   migrate-biarritz-rc1-to-pre-l1-merge:
-    if: >
-      github.event.label.name == 'cicd:migrate-biarritz-rc1-to-pre-l1-merge'
-      || github.ref == 'refs/heads/main'
-      || startsWith(github.ref, 'refs/tags/')
+    # if: >
+    #   github.event.label.name == 'cicd:migrate-biarritz-rc1-to-pre-l1-merge'
+    #   || github.ref == 'refs/heads/main'
+    #   || startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: buildjet-16vcpu-ubuntu-2204
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -496,9 +495,9 @@ jobs:
 #    strategy:
 #      matrix:
 #        include:
-#          - os: ubuntu-22.04
+#          - os: tenki-standard-autoscale
 #            arch: x86_64
-#            runs-on: buildjet-16vcpu-ubuntu-2204
+#            runs-on: tenki-standard-autoscale
 #
 #    runs-on: ${{ matrix.runs-on }}
 #
