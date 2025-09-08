@@ -14,7 +14,7 @@ on: pull_request
 
 jobs:
   read-github-context-object:
-    runs-on: ubuntu-latest
+    runs-on: tenki-standard-autoscale
     steps:
       # I know this is not pretty (debug information) but it's useful to have this
       - name: Read github context
@@ -29,9 +29,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
           - os: macos-15
             arch: arm64
             runs-on: macos-15
@@ -53,9 +53,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
           - os: macos-15
             arch: arm64
             runs-on: macos-15
@@ -90,9 +90,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -121,9 +121,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -150,9 +150,9 @@ jobs:
   #   strategy:
   #     matrix:
   #       include:
-  #         - os: ubuntu-latest
+  #         - os: tenki-standard-autoscale
   #           arch: x86_64
-  #           runs-on: ubuntu-latest
+  #           runs-on: tenki-standard-autoscale
 
   #   runs-on: ${{ matrix.runs-on }}
 
@@ -181,9 +181,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -207,9 +207,9 @@ jobs:
   #   strategy:
   #     matrix:
   #       include:
-  #         - os: ubuntu-latest
+  #         - os: tenki-standard-autoscale
   #           arch: x86_64
-  #           runs-on: ubuntu-latest
+  #           runs-on: tenki-standard-autoscale
 
   #   runs-on: ${{ matrix.runs-on }}
 
@@ -240,9 +240,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -265,9 +265,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -291,9 +291,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -320,9 +320,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -349,9 +349,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -364,7 +364,7 @@ jobs:
  
   cargo-fmt-check:
     name: Cargo Format Check
-    runs-on: ubuntu-latest
+    runs-on: tenki-standard-autoscale
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -382,9 +382,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -411,9 +411,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -441,9 +441,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -470,9 +470,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: tenki-standard-autoscale
             arch: x86_64
-            runs-on: ubuntu-latest
+            runs-on: tenki-standard-autoscale
 
     runs-on: ${{ matrix.runs-on }}
 
@@ -495,9 +495,9 @@ jobs:
 #    strategy:
 #      matrix:
 #        include:
-#          - os: ubuntu-latest
+#          - os: tenki-standard-autoscale
 #            arch: x86_64
-#            runs-on: ubuntu-latest
+#            runs-on: tenki-standard-autoscale
 #
 #    runs-on: ${{ matrix.runs-on }}
 #
